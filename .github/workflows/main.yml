@@ -4,23 +4,22 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["shivatest"]
-
 jobs:
   # Single deploy job since we're just deploying
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Deploy to FTP Server
-        uses: SamKirkland/FTP-Deploy-Action@4.3.1
-        with:
-          server: home562576484.1and1-data.host
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          local-dir: './'
-          server-dir: '/site/IS436/lab5/shiva/'
-          port: 22
-          protocol: sftp
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy file
+        uses: SamKirkland/FTP-Deploy-Action@2.0.0
+        env:
+          FTP_SERVER: home562576484.1and1-data.host
+          FTP_USERNAME: ${{secrets.ftp_username}}
+          FTP_PASSWORD: ${{ secrets.ftp_password }}
+          local_path: './*'
+          PORT: 22
+          METHOD: sftp
+          remote_path: '/site/IS436/lab5/shiva/'
+          sftp_only: true
